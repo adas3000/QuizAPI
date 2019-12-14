@@ -14,8 +14,6 @@ public class Answer {
     @OneToOne
     private Choice correct;
 
-    @OneToOne
-    private Question question;
 
     public Long getId() {
         return id;
@@ -33,11 +31,4 @@ public class Answer {
         this.correct = correct;
     }
 
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
 }
