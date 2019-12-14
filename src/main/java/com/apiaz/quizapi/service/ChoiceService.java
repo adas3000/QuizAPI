@@ -43,6 +43,21 @@ public class ChoiceService {
         return new ResponseEntity<>("Deleted",HttpStatus.OK);
     }
 
+    public ResponseEntity<Object> findById(Long id){
+
+        Choice choice = choiceRepository.findById(id).orElse(null);
+
+        if(choice==null){
+            return noObjectWithSuchId();
+        }
+
+        return new ResponseEntity<>(choice,HttpStatus.OK);
+    }
+
+
+    private ResponseEntity<Object> noObjectWithSuchId(){
+        return new ResponseEntity<>("no_object_with_such_id",HttpStatus.NOT_FOUND);
+    }
 
 
 }

@@ -42,14 +42,27 @@ public class AnswerService {
         Answer answer = answerRepository.findById(id).orElse(null);
 
         if(answer==null){
-            return new ResponseEntity<>("no_answer_with_such_id",HttpStatus.BAD_REQUEST);
+           noObjectWithSuchId();
         }
 
         answerRepository.delete(answer);
         return new ResponseEntity<>("Deleted.",HttpStatus.OK);
     }
 
+    public ResponseEntity<Object> findById(Long id){
 
+        Answer answer = answerRepository.findById(id).orElse(null);
+
+        if(answer==null){
+            return noObjectWithSuchId();
+        }
+
+        return new ResponseEntity<>(answer,HttpStatus.OK);
+    }
+
+    private ResponseEntity<Object> noObjectWithSuchId(){
+        return new ResponseEntity<>("no_object_with_such_id",HttpStatus.NOT_FOUND);
+    }
 
 
 }

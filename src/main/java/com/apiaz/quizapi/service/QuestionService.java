@@ -73,5 +73,16 @@ public class QuestionService {
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
 
+    public ResponseEntity<Object> findById(Long id) {
+
+        Question question = questionRepository.findById(id).orElse(null);
+
+        if (question == null) {
+            return new ResponseEntity<>("no_question_with_such_id", HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(question,HttpStatus.OK);
+    }
+
 
 }
