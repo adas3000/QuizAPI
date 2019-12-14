@@ -20,8 +20,8 @@ public class QuestionController {
         return questionService.addQuestion(newQuestionRequest);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> remove(@RequestBody @NonNull Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> remove(@PathVariable @NonNull Long id){
         return questionService.remove(id);
     }
 
@@ -30,7 +30,10 @@ public class QuestionController {
         return questionService.findById(id);
     }
 
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findById_2(@PathVariable Long id){
+        return questionService.findById(id);
+    }
 
 
 }
