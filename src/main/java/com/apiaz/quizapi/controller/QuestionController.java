@@ -32,8 +32,8 @@ public class QuestionController {
     }
 
     @GetMapping("/{category}/{count}")
-    public ResponseEntity<Object> getRandomQuestions(){
-
+    public ResponseEntity<Object> getRandomQuestions(@PathVariable String category,@PathVariable String count){
+        return questionService.getRandomQuestions(category,count);
     }
 
 
