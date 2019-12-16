@@ -85,7 +85,6 @@ public class QuestionService {
 
         String cap = category.substring(0, 1).toUpperCase();
         String categoryCapitalized = cap + category.substring(1);
-        System.out.println(categoryCapitalized);
 
         try {
             Category c = Category.valueOf(categoryCapitalized);
@@ -157,5 +156,12 @@ public class QuestionService {
         return new ResponseEntity<>(questionRepository.findAll(),HttpStatus.OK);
     }
 
+    public ResponseEntity<Object> getRandomQuestions(String category,int count){
+        return null;
+    }
+
+    private String getCategoryStringCapitalized(String category){
+        return category.substring(0, 1).toUpperCase() + category.substring(1);
+    }
 
 }

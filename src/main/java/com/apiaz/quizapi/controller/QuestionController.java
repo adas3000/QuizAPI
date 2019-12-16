@@ -31,6 +31,11 @@ public class QuestionController {
         return questionService.findAll();
     }
 
+    @GetMapping("/{category}/{count}")
+    public ResponseEntity<Object> getRandomQuestions(){
+
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> remove(@PathVariable @NonNull Long id){
