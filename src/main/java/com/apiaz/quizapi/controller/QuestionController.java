@@ -26,6 +26,10 @@ public class QuestionController {
         return questionService.addQuestion(newQuestionRequestBody);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<Object> findAll(){
+        return questionService.findAll();
+    }
 
 
     @DeleteMapping("/{id}")

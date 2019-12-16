@@ -80,15 +80,15 @@ public class QuestionService {
             return new ResponseEntity<>("wrong_answer_id_value",HttpStatus.BAD_REQUEST);
         }
 
-
         String category = newQuestionRequestBody.category;
 
+
         String cap = category.substring(0, 1).toUpperCase();
-        String categoryCapitalized = cap + category;
+        String categoryCapitalized = cap + category.substring(1);
+        System.out.println(categoryCapitalized);
 
         try {
             Category c = Category.valueOf(categoryCapitalized);
-
 
             Choice correct_choice = new Choice(newQuestionRequestBody.choiceValues[newQuestionRequestBody.answerId]);
 
@@ -101,9 +101,18 @@ public class QuestionService {
             Set<Choice> choices = new HashSet<>();
 
             for (String s : newQuestionRequestBody.choiceValues) {
-                choices.add(new Choice(s));
+                Choice ch = new Choice(s);
+                choices.add(ch);
+                choiceRepository.save(ch);
             }
-            choices.add(correct_choice);
+
+            question = new Question();
+            question.setCategory(c);
+            question.setValue(newQuestionRequestBody.value);
+            question.setAnswer(answer);
+            question.setChoices(choices);
+
+            questionRepository.save(question);
 
         } catch (IllegalArgumentException e) {
             e.fillInStackTrace();
