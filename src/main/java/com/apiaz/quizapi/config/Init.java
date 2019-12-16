@@ -1,5 +1,6 @@
 package com.apiaz.quizapi.config;
 
+import com.apiaz.quizapi.enums.Category;
 import com.apiaz.quizapi.model.Answer;
 import com.apiaz.quizapi.model.Choice;
 import com.apiaz.quizapi.model.Question;
@@ -42,7 +43,7 @@ public class Init {
         Question question = new Question();
         question.setValue("How old Lioenl Messi was in 24th January 2010?");
         question.setChoices(Set.of(choice_1,choice_2));
-
+        question.setCategory(Category.Sport);
         question.setAnswer(answer);
 
         answerRepository.save(answer);

@@ -1,5 +1,7 @@
 package com.apiaz.quizapi.model;
 
+import com.apiaz.quizapi.enums.Category;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +23,16 @@ public class Question {
     @OneToOne
     private Answer answer;
 
+    @Enumerated
+    private Category category;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public Long getId() {
         return id;

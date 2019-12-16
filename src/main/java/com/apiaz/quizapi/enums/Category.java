@@ -1,5 +1,5 @@
 package com.apiaz.quizapi.enums;
 
 public enum  Category {
-    All,Sport,It,Physics,Biology
+    All,Sport,It,Physics,Biology,GeneralKnowledge
 }

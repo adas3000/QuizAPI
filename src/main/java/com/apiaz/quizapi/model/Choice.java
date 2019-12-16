@@ -16,6 +16,11 @@ public class Choice {
     @Column(name = "value")
     private String value;
 
+    public Choice(String value) {
+        this.value = value;
+    }
+
+    public Choice(){}
 
     public Long getId() {
         return id;

@@ -1,5 +1,6 @@
 package com.apiaz.quizapi.service;
 
+import com.apiaz.quizapi.enums.Category;
 import com.apiaz.quizapi.model.Answer;
 import com.apiaz.quizapi.model.Choice;
 import com.apiaz.quizapi.model.Question;
@@ -62,9 +63,54 @@ public class QuestionService {
         return new ResponseEntity<>("question_added", HttpStatus.OK);
     }
 
-    public ResponseEntity<Object> addQuestion(NewQuestionRequestBody newQuestionRequestBody){
+    public ResponseEntity<Object> addQuestion(NewQuestionRequestBody newQuestionRequestBody) {
 
-        return null;
+        Question question = questionRepository.findByValue(newQuestionRequestBody.value).orElse(null);
+
+        if (question != null) {
+            return new ResponseEntity<>("question_already_exist", HttpStatus.BAD_REQUEST);
+        }
+
+        else if (newQuestionRequestBody.choiceValues == null || newQuestionRequestBody.category == null ||
+                newQuestionRequestBody.value == null) {
+            return new ResponseEntity<>("value_cannot_be_empty", HttpStatus.BAD_REQUEST);
+        }
+
+        else if(newQuestionRequestBody.answerId<0 || newQuestionRequestBody.answerId >= newQuestionRequestBody.choiceValues.length-1){
+            return new ResponseEntity<>("wrong_answer_id_value",HttpStatus.BAD_REQUEST);
+        }
+
+
+        String category = newQuestionRequestBody.category;
+
+        String cap = category.substring(0, 1).toUpperCase();
+        String categoryCapitalized = cap + category;
+
+        try {
+            Category c = Category.valueOf(categoryCapitalized);
+
+
+            Choice correct_choice = new Choice(newQuestionRequestBody.choiceValues[newQuestionRequestBody.answerId]);
+
+            Answer answer = new Answer();
+            answer.setCorrect(correct_choice);
+
+            choiceRepository.save(correct_choice);
+            answerRepository.save(answer);
+
+            Set<Choice> choices = new HashSet<>();
+
+            for (String s : newQuestionRequestBody.choiceValues) {
+                choices.add(new Choice(s));
+            }
+            choices.add(correct_choice);
+
+        } catch (IllegalArgumentException e) {
+            e.fillInStackTrace();
+            return new ResponseEntity<>("no_such_category", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>("question_added", HttpStatus.OK);
     }
 
 
@@ -88,7 +134,18 @@ public class QuestionService {
             return new ResponseEntity<>("no_question_with_such_id", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(question,HttpStatus.OK);
+        return new ResponseEntity<>(question, HttpStatus.OK);
+    }
+
+    public ResponseEntity<Object> findAllByCategory(String category){
+
+
+
+        return null;
+    }
+
+    public ResponseEntity<Object> findAll(){
+        return new ResponseEntity<>(questionRepository.findAll(),HttpStatus.OK);
     }
 
 
