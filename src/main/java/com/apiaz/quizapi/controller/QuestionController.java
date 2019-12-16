@@ -1,6 +1,7 @@
 package com.apiaz.quizapi.controller;
 
 import com.apiaz.quizapi.request.NewQuestionRequest;
+import com.apiaz.quizapi.request.NewQuestionRequestBody;
 import com.apiaz.quizapi.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,17 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Object> addQuestion(@RequestBody @NonNull NewQuestionRequest newQuestionRequest){
         return questionService.addQuestion(newQuestionRequest);
     }
+
+    @PostMapping("/add/manual")
+    public ResponseEntity<Object> addQuestion(@RequestBody @NonNull NewQuestionRequestBody newQuestionRequestBody){
+        return questionService.addQuestion(newQuestionRequestBody);
+    }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> remove(@PathVariable @NonNull Long id){

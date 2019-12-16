@@ -7,6 +7,7 @@ import com.apiaz.quizapi.repo.AnswerRepository;
 import com.apiaz.quizapi.repo.ChoiceRepository;
 import com.apiaz.quizapi.repo.QuestionRepository;
 import com.apiaz.quizapi.request.NewQuestionRequest;
+import com.apiaz.quizapi.request.NewQuestionRequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,12 @@ public class QuestionService {
 
         return new ResponseEntity<>("question_added", HttpStatus.OK);
     }
+
+    public ResponseEntity<Object> addQuestion(NewQuestionRequestBody newQuestionRequestBody){
+
+        return null;
+    }
+
 
     public ResponseEntity<Object> remove(Long id) {
 
