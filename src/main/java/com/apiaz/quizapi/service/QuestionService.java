@@ -179,9 +179,6 @@ public class QuestionService {
             }
 
             return new ResponseEntity<>(random, HttpStatus.OK);
-
-
-
         } catch (NumberFormatException e) {
             e.fillInStackTrace();
             return new ResponseEntity<>("count_have_to_be_digit", HttpStatus.BAD_REQUEST);
