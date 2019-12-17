@@ -36,6 +36,11 @@ public class QuestionController {
         return questionService.getRandomQuestions(category,count);
     }
 
+    @GetMapping("/random")
+    public ResponseEntity<Object> getRandomQuestions_params(@RequestParam String category,@RequestParam String count){
+        return questionService.getRandomQuestions(category,count);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> remove(@PathVariable @NonNull Long id){
