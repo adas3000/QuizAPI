@@ -49,6 +49,35 @@ public class Init {
         answerRepository.save(answer);
         questionRepository.save(question);
 
+        Choice choice_b1 = new Choice();
+        choice_b1.setValue("60's of the 20th century");
+
+        Choice choice_b2 = new Choice();
+        choice_b2.setValue("50's of the 20th century");
+
+        Choice choice_b3 = new Choice();
+        choice_b3.setValue("Begin of the 20th century");
+
+        Choice choice_b4 = new Choice();
+        choice_b4.setValue("40's of the 20th century");
+
+        choiceRepository.save(choice_b1);
+        choiceRepository.save(choice_b2);
+        choiceRepository.save(choice_b3);
+        choiceRepository.save(choice_b4);
+
+        Answer answer_b = new Answer();
+        answer_b.setCorrect(choice_b4);
+
+        answerRepository.save(answer_b);
+
+        Question question_b = new Question();
+        question_b.setAnswer(answer_b);
+        question_b.setChoices(Set.of(choice_b1,choice_b2,choice_b3,choice_b4));
+        question_b.setCategory(Category.It);
+        question_b.setValue("IT beginnings are considered to:");
+
+        questionRepository.save(question_b);
     }
 
 

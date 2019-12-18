@@ -32,3 +32,5 @@ build/
 
 local.properties
 generatedJava/
+
+src/main/resources/application.properties
