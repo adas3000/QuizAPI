@@ -21,6 +21,15 @@ public class User {
     @Enumerated
     private Role role;
 
+    private String session;
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
+    }
 
     public Long getId() {
         return id;
