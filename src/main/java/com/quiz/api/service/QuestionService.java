@@ -33,7 +33,15 @@ public class QuestionService {
     @Autowired
     private AnswerRepository answerRepository;
 
+    @Autowired
+    private AuthService authService;
+
+
+
     public ResponseEntity<Object> addQuestion(NewQuestionRequest questionRequest) {
+
+        if(!checkPermissions())
+            returnNoPermissions();
 
         Answer answer = answerRepository.findById(questionRequest.answerId).orElse(null);
 
@@ -68,6 +76,9 @@ public class QuestionService {
     }
 
     public ResponseEntity<Object> addQuestion(NewQuestionRequestBody newQuestionRequestBody) {
+
+        if(!checkPermissions())
+            returnNoPermissions();
 
         Question question = questionRepository.findByValue(newQuestionRequestBody.value).orElse(null);
 
@@ -120,6 +131,8 @@ public class QuestionService {
 
 
     public ResponseEntity<Object> remove(Long id) {
+        if(!checkPermissions())
+            returnNoPermissions();
 
         Question question = questionRepository.findById(id).orElse(null);
 
@@ -132,6 +145,8 @@ public class QuestionService {
     }
 
     public ResponseEntity<Object> findById(Long id) {
+        if(!checkPermissions())
+            returnNoPermissions();
 
         Question question = questionRepository.findById(id).orElse(null);
 
@@ -149,6 +164,8 @@ public class QuestionService {
     }
 
     public ResponseEntity<Object> findAll() {
+        if(!checkPermissions())
+            returnNoPermissions();
         return new ResponseEntity<>(questionRepository.findAll(), HttpStatus.OK);
     }
 
@@ -189,6 +206,17 @@ public class QuestionService {
 
     private String getCategoryStringCapitalized(String category) {
         return category.substring(0, 1).toUpperCase() + category.substring(1);
+    }
+
+    private boolean checkPermissions(){
+        if(!authService.userIsAdmin())
+            return false;
+
+        return true;
+    }
+
+    private ResponseEntity<Object> returnNoPermissions(){
+        return new ResponseEntity<>("no_permissions",HttpStatus.UNAUTHORIZED);
     }
 
 }

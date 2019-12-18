@@ -14,8 +14,14 @@ public class ChoiceService {
     @Autowired
     private ChoiceRepository choiceRepository;
 
+    @Autowired
+    private AuthService authService;
+
 
     public ResponseEntity<Object> addChoice(String value){
+
+        if(!checkPermissions())
+            returnNoPermissions();
 
         if(value==null || value.length()==0){
             return new ResponseEntity<>("incorrect_choice_body", HttpStatus.BAD_REQUEST);
@@ -32,6 +38,9 @@ public class ChoiceService {
 
     public ResponseEntity<Object> remove(Long id){
 
+        if(!checkPermissions())
+            returnNoPermissions();
+
         Choice choice = choiceRepository.findById(id).orElse(null);
 
         if(choice==null){
@@ -44,6 +53,9 @@ public class ChoiceService {
     }
 
     public ResponseEntity<Object> findById(Long id){
+
+        if(!checkPermissions())
+            returnNoPermissions();
 
         Choice choice = choiceRepository.findById(id).orElse(null);
 
@@ -59,5 +71,14 @@ public class ChoiceService {
         return new ResponseEntity<>("no_object_with_such_id",HttpStatus.NOT_FOUND);
     }
 
+    private boolean checkPermissions(){
+        if(!authService.userIsAdmin())
+            return false;
 
+        return true;
+    }
+
+    private ResponseEntity<Object> returnNoPermissions(){
+        return new ResponseEntity<>("no_permissions",HttpStatus.UNAUTHORIZED);
+    }
 }
