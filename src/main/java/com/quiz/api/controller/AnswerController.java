@@ -22,6 +22,12 @@ public class AnswerController {
         return answerService.addAnswer(choice_id);
     }
 
+    @DeleteMapping
+    @Permission(role = Role.Admin)
+    public ResponseEntity<Object> deleteAll(){
+        return answerService.deleteAll();
+    }
+
     @Permission(role = Role.Admin)
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> removeById(@PathVariable @RequestBody @NonNull Long answer_id){

@@ -1,9 +1,11 @@
 package com.quiz.api.service;
 
 import com.quiz.api.enums.Category;
+import com.quiz.api.enums.Role;
 import com.quiz.api.model.Answer;
 import com.quiz.api.model.Choice;
 import com.quiz.api.model.Question;
+import com.quiz.api.model.User;
 import com.quiz.api.repo.AnswerRepository;
 import com.quiz.api.repo.ChoiceRepository;
 import com.quiz.api.repo.QuestionRepository;
@@ -37,11 +39,11 @@ public class QuestionService {
     private AuthService authService;
 
 
-
     public ResponseEntity<Object> addQuestion(NewQuestionRequest questionRequest) {
 
+
         if(!checkPermissions())
-            returnNoPermissions();
+            return returnNoPermissions();
 
         Answer answer = answerRepository.findById(questionRequest.answerId).orElse(null);
 
@@ -76,9 +78,8 @@ public class QuestionService {
     }
 
     public ResponseEntity<Object> addQuestion(NewQuestionRequestBody newQuestionRequestBody) {
-
         if(!checkPermissions())
-            returnNoPermissions();
+            return returnNoPermissions();
 
         Question question = questionRepository.findByValue(newQuestionRequestBody.value).orElse(null);
 
@@ -87,7 +88,7 @@ public class QuestionService {
         } else if (newQuestionRequestBody.choiceValues == null || newQuestionRequestBody.category == null ||
                 newQuestionRequestBody.value == null) {
             return new ResponseEntity<>("value_cannot_be_empty", HttpStatus.BAD_REQUEST);
-        } else if (newQuestionRequestBody.answerId < 0 || newQuestionRequestBody.answerId >= newQuestionRequestBody.choiceValues.length - 1) {
+        } else if (newQuestionRequestBody.answerId < 0 || newQuestionRequestBody.answerId > newQuestionRequestBody.choiceValues.length - 1) {
             return new ResponseEntity<>("wrong_answer_id_value", HttpStatus.BAD_REQUEST);
         }
 
@@ -132,7 +133,7 @@ public class QuestionService {
 
     public ResponseEntity<Object> remove(Long id) {
         if(!checkPermissions())
-            returnNoPermissions();
+            return returnNoPermissions();
 
         Question question = questionRepository.findById(id).orElse(null);
 
@@ -146,7 +147,7 @@ public class QuestionService {
 
     public ResponseEntity<Object> findById(Long id) {
         if(!checkPermissions())
-            returnNoPermissions();
+            return returnNoPermissions();
 
         Question question = questionRepository.findById(id).orElse(null);
 
@@ -165,7 +166,7 @@ public class QuestionService {
 
     public ResponseEntity<Object> findAll() {
         if(!checkPermissions())
-            returnNoPermissions();
+            return returnNoPermissions();
         return new ResponseEntity<>(questionRepository.findAll(), HttpStatus.OK);
     }
 
@@ -204,14 +205,25 @@ public class QuestionService {
         }
     }
 
+    public ResponseEntity<Object> deleteAll(){
+
+        if(!checkPermissions())
+            return returnNoPermissions();
+        
+        questionRepository.deleteAll();
+        return new ResponseEntity<>("all_question_data_deleted",HttpStatus.OK);
+    }
+
     private String getCategoryStringCapitalized(String category) {
         return category.substring(0, 1).toUpperCase() + category.substring(1);
     }
 
     private boolean checkPermissions(){
-        if(!authService.userIsAdmin())
-            return false;
 
+        User u = authService.getLoggedUser();
+        if(u==null || u.getRole()== Role.Admin){
+            return false;
+        }
         return true;
     }
 

@@ -1,12 +1,10 @@
 package com.quiz.api.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "choice")
 public class Choice {
 
     @Id

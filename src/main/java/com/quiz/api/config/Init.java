@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Set;
 
-@Component
+//@Component
 public class Init {
 
     @Autowired
@@ -25,7 +25,7 @@ public class Init {
     @Autowired
     private ChoiceRepository choiceRepository;
 
-    @PostConstruct
+  //  @PostConstruct
     public void initData(){
 
         Choice choice_1 = new Choice();

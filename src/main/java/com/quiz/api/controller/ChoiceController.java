@@ -4,6 +4,7 @@ package com.quiz.api.controller;
 import com.quiz.api.Annotation.Permission;
 import com.quiz.api.enums.Role;
 import com.quiz.api.service.ChoiceService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
@@ -22,6 +23,13 @@ public class ChoiceController {
     public ResponseEntity<Object> addChoice(@RequestBody @NonNull String value){
         return choiceService.addChoice(value);
     }
+
+    @DeleteMapping
+    @Permission(role = Role.Admin)
+    public ResponseEntity<Object> deleteAll(){
+        return choiceService.deleteAll();
+    }
+
 
     @Permission(role = Role.Admin)
     @DeleteMapping("/{id}")

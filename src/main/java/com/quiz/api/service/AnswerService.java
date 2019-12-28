@@ -22,15 +22,15 @@ public class AnswerService {
     @Autowired
     private AuthService authService;
 
-    public ResponseEntity<Object> addAnswer(Long choiceId){
+    public ResponseEntity<Object> addAnswer(Long choiceId) {
 
-        if(!checkPermissions())
-            returnNoPermissions();
+        if (!checkPermissions())
+            return returnNoPermissions();
 
 
         Choice choice = choiceRepository.findById(choiceId).orElse(null);
 
-        if(choice==null){
+        if (choice == null) {
             return new ResponseEntity<>("no_choice_with_this_id", HttpStatus.BAD_REQUEST);
         }
 
@@ -39,52 +39,61 @@ public class AnswerService {
 
         answerRepository.save(answer);
 
-        return new ResponseEntity<>("answer_added",HttpStatus.OK);
+        return new ResponseEntity<>("answer_added", HttpStatus.OK);
     }
 
 
-    public ResponseEntity<Object> remove(Long id){
+    public ResponseEntity<Object> remove(Long id) {
 
-        if(!checkPermissions())
-            returnNoPermissions();
+        if (!checkPermissions())
+            return returnNoPermissions();
 
         Answer answer = answerRepository.findById(id).orElse(null);
 
-        if(answer==null){
-           noObjectWithSuchId();
+        if (answer == null) {
+            noObjectWithSuchId();
         }
 
         answerRepository.delete(answer);
-        return new ResponseEntity<>("Deleted.",HttpStatus.OK);
+        return new ResponseEntity<>("Deleted.", HttpStatus.OK);
     }
 
-    public ResponseEntity<Object> findById(Long id){
+    public ResponseEntity<Object> findById(Long id) {
 
-        if(!checkPermissions())
-            returnNoPermissions();
+        if (!checkPermissions())
+            return returnNoPermissions();
 
         Answer answer = answerRepository.findById(id).orElse(null);
 
-        if(answer==null){
+        if (answer == null) {
             return noObjectWithSuchId();
         }
 
-        return new ResponseEntity<>(answer,HttpStatus.OK);
+        return new ResponseEntity<>(answer, HttpStatus.OK);
     }
 
-    private ResponseEntity<Object> noObjectWithSuchId(){
-        return new ResponseEntity<>("no_object_with_such_id",HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> deleteAll() {
+
+        if (!checkPermissions())
+            return returnNoPermissions();
+
+        answerRepository.deleteAll();
+        return new ResponseEntity<>("all_answer_data_deleted", HttpStatus.OK);
     }
 
-    private boolean checkPermissions(){
-        if(!authService.userIsAdmin())
+    private ResponseEntity<Object> noObjectWithSuchId() {
+        return new ResponseEntity<>("no_object_with_such_id", HttpStatus.NOT_FOUND);
+    }
+
+    private boolean checkPermissions() {
+        if (!authService.userIsAdmin())
             return false;
 
         return true;
     }
 
-    private ResponseEntity<Object> returnNoPermissions(){
-        return new ResponseEntity<>("no_permissions",HttpStatus.UNAUTHORIZED);
+    private ResponseEntity<Object> returnNoPermissions() {
+        return new ResponseEntity<>("no_permissions", HttpStatus.UNAUTHORIZED);
     }
 
 }

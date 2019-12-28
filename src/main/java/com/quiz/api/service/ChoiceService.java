@@ -17,11 +17,19 @@ public class ChoiceService {
     @Autowired
     private AuthService authService;
 
+    public ResponseEntity<Object> deleteAll(){
+
+        if(!checkPermissions())
+            return returnNoPermissions();
+
+        choiceRepository.deleteAll();
+        return new ResponseEntity<>("all_choice_data_deleted",HttpStatus.OK);
+    }
 
     public ResponseEntity<Object> addChoice(String value){
 
         if(!checkPermissions())
-            returnNoPermissions();
+            return returnNoPermissions();
 
         if(value==null || value.length()==0){
             return new ResponseEntity<>("incorrect_choice_body", HttpStatus.BAD_REQUEST);
@@ -39,7 +47,7 @@ public class ChoiceService {
     public ResponseEntity<Object> remove(Long id){
 
         if(!checkPermissions())
-            returnNoPermissions();
+            return returnNoPermissions();
 
         Choice choice = choiceRepository.findById(id).orElse(null);
 
@@ -55,7 +63,7 @@ public class ChoiceService {
     public ResponseEntity<Object> findById(Long id){
 
         if(!checkPermissions())
-            returnNoPermissions();
+            return returnNoPermissions();
 
         Choice choice = choiceRepository.findById(id).orElse(null);
 

@@ -4,6 +4,7 @@ package com.quiz.api.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "answer")
 public class Answer {
 
 

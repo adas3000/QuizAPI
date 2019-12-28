@@ -31,6 +31,12 @@ public class QuestionController {
     }
 
     @Permission(role = Role.Admin)
+    @DeleteMapping
+    public ResponseEntity<Object> deleteAll(){
+        return questionService.deleteAll();
+    }
+
+    @Permission(role = Role.Admin)
     @GetMapping("/all")
     public ResponseEntity<Object> findAll(){
         return questionService.findAll();

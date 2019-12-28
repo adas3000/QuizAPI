@@ -2,12 +2,10 @@ package com.quiz.api.model;
 
 import com.quiz.api.enums.Role;
 
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "_user")
 public class User {
 
     @Id
