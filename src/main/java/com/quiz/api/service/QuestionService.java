@@ -209,7 +209,7 @@ public class QuestionService {
 
         if(!checkPermissions())
             return returnNoPermissions();
-        
+
         questionRepository.deleteAll();
         return new ResponseEntity<>("all_question_data_deleted",HttpStatus.OK);
     }
