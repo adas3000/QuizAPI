@@ -205,6 +205,23 @@ public class QuestionService {
         }
     }
 
+    public List<Question> getRandomQuestionList(Category category,int count){
+        List<Question> questions;
+        if (category.equals(Category.All))
+            questions = Lists.newArrayList(questionRepository.findAll());
+        else
+            questions = questionRepository.findAllByCategory(category);
+        
+        List<Question> random = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            int rand_int = ThreadLocalRandom.current().nextInt(0, questions.size());
+            random.add(questions.get(rand_int));
+            questions.remove(rand_int);
+        }
+        return random;
+    }
+
     public ResponseEntity<Object> deleteAll(){
 
         if(!checkPermissions())
