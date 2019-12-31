@@ -20,7 +20,7 @@ public class Game {
     @ManyToMany
     private List<Question> questions = new ArrayList<>();
 
-    private String GameUUID=null;
+    private String gameUUID =null;
 
     public Long getId() {
         return id;
@@ -47,10 +47,10 @@ public class Game {
     }
 
     public String getGameUUID() {
-        return GameUUID;
+        return gameUUID;
     }
 
     public void setGameUUID(String gameUUID) {
-        GameUUID = gameUUID;
+        this.gameUUID = gameUUID;
     }
 }
