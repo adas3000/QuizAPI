@@ -211,7 +211,7 @@ public class QuestionService {
             questions = Lists.newArrayList(questionRepository.findAll());
         else
             questions = questionRepository.findAllByCategory(category);
-        
+
         List<Question> random = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {

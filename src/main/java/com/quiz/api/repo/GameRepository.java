@@ -9,5 +9,5 @@ import java.util.List;
 
 
 public interface GameRepository extends CrudRepository<Game,Long> {
-
+    Game findByGameUUID(@Param("GameUUID")String GameUUID);
 }

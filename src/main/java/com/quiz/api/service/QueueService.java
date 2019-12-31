@@ -2,6 +2,7 @@ package com.quiz.api.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.quiz.api.enums.Category;
 import com.quiz.api.model.Device;
 import com.quiz.api.model.Game;
 import com.quiz.api.repo.DeviceRepository;
@@ -24,6 +25,9 @@ public class QueueService {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private QuestionService questionService;
 
     public ResponseEntity<Object> pushClientToQueue(String serialNumber) {
 
@@ -76,6 +80,7 @@ public class QueueService {
             game = new Game();
             game.getPlayers().add(d);
             game.setGameUUID(gameUUID);
+            game.setQuestions(questionService.getRandomQuestionList(Category.All,10));
         } else {
             gameUUID = game.getGameUUID();
         }
