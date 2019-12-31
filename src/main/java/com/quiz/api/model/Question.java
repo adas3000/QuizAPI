@@ -3,7 +3,9 @@ package com.quiz.api.model;
 import com.quiz.api.enums.Category;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,6 +27,17 @@ public class Question {
 
     @Enumerated
     private Category category;
+
+    @ManyToMany
+    private List<Game> games = new ArrayList<>();
+
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
 
     public Category getCategory() {
         return category;
