@@ -13,11 +13,32 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-
     @GetMapping("/{uuid}")
     public ResponseEntity<Object> findGameByUUID(@PathVariable("uuid")String uuid){
         return gameService.findGameByUUID(uuid);
     }
+
+    @GetMapping("/all_connected/{uuid}")
+    public ResponseEntity<Object> allPlayersConnected(@PathVariable("uuid")String uuid){
+        return gameService.allPlayersConnected(uuid);
+    }
+
+    @DeleteMapping("/{uuid}/{serial}")
+    public ResponseEntity<Object> getOutFromGame(@PathVariable("uuid")String uuid,@PathVariable("serial")String serial){
+        return gameService.removePlayerFromGame(uuid,serial);
+    }
+
+
+    @DeleteMapping("/all")
+    public ResponseEntity<Object> dropAll(){
+        return gameService.removeAllGames();
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Object> findAll(){
+        return gameService.findAll();
+    }
+
 
 }
 

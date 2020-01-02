@@ -37,8 +37,9 @@ public class QueueService {
 
         d = new Device();
         d.setSerialNumber(serialNumber);
-
         deviceRepository.save(d);
+
+        System.out.println("New opponent in queue");
         return new ResponseEntity<>(List.of("added_to_queue"), HttpStatus.OK);
     }
 
@@ -51,6 +52,7 @@ public class QueueService {
         }
 
         deviceRepository.delete(d);
+        System.out.println("Opponent went out from queue");
         return new ResponseEntity<>(List.of("deleted_from_queue"), HttpStatus.OK);
     }
 
@@ -64,6 +66,7 @@ public class QueueService {
         }
 
         List<Game> games = Lists.newArrayList(gameRepository.findAll());
+
         Game game = null;
 
         for(Game g : games){
@@ -81,9 +84,11 @@ public class QueueService {
             game.setQuestions(questionService.getRandomQuestionList(Category.All,10));
         } else {
             gameUUID = game.getGameUUID();
+            game.getPlayers().add(d);
         }
+        gameRepository.save(game);
 
-        return new ResponseEntity<>(gameUUID, HttpStatus.OK);
+        return new ResponseEntity<>(List.of(gameUUID), HttpStatus.OK);
     }
 
     public ResponseEntity<Object> getAllQueue() {
