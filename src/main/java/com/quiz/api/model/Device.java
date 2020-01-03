@@ -19,6 +19,16 @@ public class Device {
     @Column(name = "is_choosing_category")
     private boolean is_choosing_category=false;
 
+    private int current_score = 0;
+
+    public int getCurrent_score() {
+        return current_score;
+    }
+
+    public void setCurrent_score(int current_score) {
+        this.current_score = current_score;
+    }
+
     public Long getId() {
         return id;
     }
