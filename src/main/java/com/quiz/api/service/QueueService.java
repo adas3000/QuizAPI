@@ -39,7 +39,6 @@ public class QueueService {
         d.setSerialNumber(serialNumber);
         deviceRepository.save(d);
 
-        System.out.println("New opponent in queue");
         return new ResponseEntity<>(List.of("added_to_queue"), HttpStatus.OK);
     }
 
@@ -87,6 +86,7 @@ public class QueueService {
             game.getPlayers().add(d);
         }
         gameRepository.save(game);
+        deviceRepository.save(d);
 
         return new ResponseEntity<>(List.of(gameUUID), HttpStatus.OK);
     }

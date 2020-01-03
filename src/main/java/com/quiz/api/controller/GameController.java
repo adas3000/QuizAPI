@@ -39,6 +39,11 @@ public class GameController {
         return gameService.updateDeviceFinishedAnsweringToQuestion(uuid,serial);
     }
 
+    @GetMapping("/all/answered/{uuid}")
+    public ResponseEntity<Object> checkAllDevicesAnswered(@PathVariable("uuid")String uuid){
+        return gameService.checkAllDevicesAnswered(uuid);
+    }
+
     @GetMapping("/find/scores/{uuid}")
     public ResponseEntity<Object> findScoresByUUID(@PathVariable("uuid")String uuid){
         return gameService.findScoresByUUID(uuid);

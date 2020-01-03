@@ -13,9 +13,6 @@ public class Device {
     @Column(name = "serialnumber")
     private String serialNumber;
 
-    @Column(name = "opponentSerialNumber")
-    private String opponentSerialNumber=null;
-
     @Column(name = "is_choosing_category")
     private boolean is_choosing_category=false;
 
@@ -51,14 +48,6 @@ public class Device {
 
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
-    }
-
-    public String getOpponentSerialNumber() {
-        return opponentSerialNumber;
-    }
-
-    public void setOpponentSerialNumber(String opponentSerialNumber) {
-        this.opponentSerialNumber = opponentSerialNumber;
     }
 
     public boolean isIs_choosing_category() {

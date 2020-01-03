@@ -5,11 +5,13 @@ import com.quiz.api.model.Device;
 import com.quiz.api.model.Game;
 import com.quiz.api.repo.DeviceRepository;
 import com.quiz.api.repo.GameRepository;
+import com.quiz.api.request.QueueRequest;
 import com.quiz.api.response.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +105,14 @@ public class GameService {
             return new ResponseEntity<>("device_not_in_given_game",HttpStatus.NOT_FOUND);
         }
 
+        for(Device d : game.getPlayers()){
+            d.setAnswered_to_question(false);
+            deviceRepository.save(d);
+        }
+
+
         current_device.setCurrent_score(current_device.getCurrent_score()+how);
+        deviceRepository.save(current_device);
         return new ResponseEntity<>("Updated",HttpStatus.OK);
     }
 
@@ -138,17 +147,28 @@ public class GameService {
         }
 
         current_device.setAnswered_to_question(true);
+        deviceRepository.save(current_device);
+
+        return new ResponseEntity<>("Updated",HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<Object> checkAllDevicesAnswered(@PathVariable("uuid")String uuid){
+        Game game = gameRepository.findByGameUUID(uuid);
+
+        if (game == null){
+            return new ResponseEntity<>("no_such_game",HttpStatus.NOT_FOUND);
+        }
 
         for(Device d : game.getPlayers()){
             if(!(d.isAnswered_to_question())){
-                return new ResponseEntity<>("wait",HttpStatus.FOUND);
+                return new ResponseEntity<>(false,HttpStatus.OK);
             }
         }
-        for(Device d : game.getPlayers()){
-            d.setAnswered_to_question(false);
-        }
-
-        return new ResponseEntity<>("All_answered",HttpStatus.OK);
+        return new ResponseEntity<>(true,HttpStatus.OK);
     }
+
+
+
 
 }

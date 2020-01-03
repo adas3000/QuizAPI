@@ -1,16 +1,21 @@
 package com.quiz.api.config;
 
+import com.google.common.collect.Sets;
 import com.quiz.api.enums.Category;
 import com.quiz.api.model.Answer;
 import com.quiz.api.model.Choice;
+import com.quiz.api.model.Device;
 import com.quiz.api.model.Question;
 import com.quiz.api.repo.AnswerRepository;
 import com.quiz.api.repo.ChoiceRepository;
+import com.quiz.api.repo.DeviceRepository;
 import com.quiz.api.repo.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -24,6 +29,9 @@ public class Init {
 
     @Autowired
     private ChoiceRepository choiceRepository;
+
+    @Autowired
+    private DeviceRepository deviceRepository;
 
     @PostConstruct
     public void initData(){
@@ -338,6 +346,21 @@ public class Init {
 
     }
 
+    @PostConstruct
+    public void followQueue(){
+
+        new Thread(()->{
+
+            while(true){
+
+
+            }
+
+
+        }).start();
+
+
+    }
 
 
 
