@@ -78,6 +78,16 @@ public class Init {
         question_b.setValue("IT beginnings are considered to:");
 
         questionRepository.save(question_b);
+
+
+        
+
+
+
+
+
+
+
     }
 
 

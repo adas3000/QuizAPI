@@ -3,7 +3,7 @@ package com.quiz.api.model;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name="device")
 public class Device {
 
     @Id
