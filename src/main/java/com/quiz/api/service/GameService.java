@@ -124,5 +124,31 @@ public class GameService {
         return new ResponseEntity<>(scores,HttpStatus.OK);
     }
 
+    public ResponseEntity<Object> updateDeviceFinishedAnsweringToQuestion(String uuid,String serial){
+
+        Device current_device = deviceRepository.findBySerialNumber(serial);
+        Game game = gameRepository.findByGameUUID(uuid);
+
+        if (game == null || current_device == null){
+            return new ResponseEntity<>("no_such_game_or_device",HttpStatus.NOT_FOUND);
+        }
+
+        if(!(game.getPlayers().contains(current_device))){
+            return new ResponseEntity<>("device_not_in_given_game",HttpStatus.NOT_FOUND);
+        }
+
+        current_device.setAnswered_to_question(true);
+
+        for(Device d : game.getPlayers()){
+            if(!(d.isAnswered_to_question())){
+                return new ResponseEntity<>("wait",HttpStatus.FOUND);
+            }
+        }
+        for(Device d : game.getPlayers()){
+            d.setAnswered_to_question(false);
+        }
+
+        return new ResponseEntity<>("All_answered",HttpStatus.OK);
+    }
 
 }

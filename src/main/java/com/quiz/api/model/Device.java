@@ -19,11 +19,19 @@ public class Device {
     @Column(name = "is_choosing_category")
     private boolean is_choosing_category=false;
 
+    private boolean answered_to_question = false;
+
     private int current_score = 0;
 
-    public int getCurrent_score() {
-        return current_score;
+    public boolean isAnswered_to_question() {
+        return answered_to_question;
     }
+
+    public void setAnswered_to_question(boolean answered_to_question) {
+        this.answered_to_question = answered_to_question;
+    }
+
+    public int getCurrent_score() { return current_score; }
 
     public void setCurrent_score(int current_score) {
         this.current_score = current_score;

@@ -28,15 +28,20 @@ public class GameController {
         return gameService.removePlayerFromGame(uuid,serial);
     }
 
-    @PutMapping("/update/{uuid}/{serial}/{howmany}")
+    @PutMapping("/update/score/{uuid}/{serial}/{howmany}")
     public ResponseEntity<Object> updateDeviceScoreInGame(@PathVariable("uuid")String uuid,@PathVariable("serial")String serial,
                                                           @PathVariable("howmany")String howmany){
         return gameService.updateDeviceScoreInGame(uuid, serial, howmany);
     }
 
-    @GetMapping("/find/score/{uuid}")
+    @PutMapping("/update/answer_finished/{uuid}/{serial}")
+    public ResponseEntity<Object> updateDeviceFinishedAnsweringToQuestion(@PathVariable("uuid")String uuid,@PathVariable("serial") String serial){
+        return gameService.updateDeviceFinishedAnsweringToQuestion(uuid,serial);
+    }
+
+    @GetMapping("/find/scores/{uuid}")
     public ResponseEntity<Object> findScoresByUUID(@PathVariable("uuid")String uuid){
-        return null;
+        return gameService.findScoresByUUID(uuid);
     }
 
     @DeleteMapping("/all")
