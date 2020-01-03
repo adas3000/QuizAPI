@@ -5,11 +5,13 @@ import com.quiz.api.model.Device;
 import com.quiz.api.model.Game;
 import com.quiz.api.repo.DeviceRepository;
 import com.quiz.api.repo.GameRepository;
+import com.quiz.api.response.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -104,4 +106,23 @@ public class GameService {
         current_device.setCurrent_score(current_device.getCurrent_score()+how);
         return new ResponseEntity<>("Updated",HttpStatus.OK);
     }
+
+    public ResponseEntity<Object> findScoresByUUID(String uuid){
+
+        Game game = gameRepository.findByGameUUID(uuid);
+
+        if(game==null){
+            return new ResponseEntity<>(List.of("no_such_game"),HttpStatus.NOT_FOUND);
+        }
+
+        List<Score> scores = new ArrayList<>();
+
+        for(Device d : game.getPlayers()){
+            scores.add(new Score(d.getId().toString(),d.getCurrent_score()));
+        }
+
+        return new ResponseEntity<>(scores,HttpStatus.OK);
+    }
+
+
 }

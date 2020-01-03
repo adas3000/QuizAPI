@@ -34,6 +34,11 @@ public class GameController {
         return gameService.updateDeviceScoreInGame(uuid, serial, howmany);
     }
 
+    @GetMapping("/find/score/{uuid}")
+    public ResponseEntity<Object> findScoresByUUID(@PathVariable("uuid")String uuid){
+        return null;
+    }
+
     @DeleteMapping("/all")
     public ResponseEntity<Object> dropAll(){
         return gameService.removeAllGames();
