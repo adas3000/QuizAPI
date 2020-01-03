@@ -48,6 +48,7 @@ public class GameController {
     public ResponseEntity<Object> findScoresByUUID(@PathVariable("uuid")String uuid){
         return gameService.findScoresByUUID(uuid);
     }
+    
 
     @DeleteMapping("/all")
     public ResponseEntity<Object> dropAll(){
