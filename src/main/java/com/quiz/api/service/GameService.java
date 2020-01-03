@@ -105,12 +105,7 @@ public class GameService {
             return new ResponseEntity<>("device_not_in_given_game",HttpStatus.NOT_FOUND);
         }
 
-        for(Device d : game.getPlayers()){
-            d.setAnswered_to_question(false);
-            deviceRepository.save(d);
-        }
-
-
+        current_device.setAnswered_to_question(false);
         current_device.setCurrent_score(current_device.getCurrent_score()+how);
         deviceRepository.save(current_device);
         return new ResponseEntity<>("Updated",HttpStatus.OK);
