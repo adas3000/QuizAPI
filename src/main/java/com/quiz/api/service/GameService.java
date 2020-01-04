@@ -99,11 +99,10 @@ public class GameService {
         if (how < 0) {
             return new ResponseEntity<>(List.of("howmany_less_than_0"), HttpStatus.BAD_REQUEST);
         }
-
         if (!(game.getPlayers().contains(current_device))) {
             return new ResponseEntity<>(List.of("device_not_in_given_game"), HttpStatus.NOT_FOUND);
         }
-        current_device.setReady_For_Next_Question(false);
+
         current_device.setCurrent_score(current_device.getCurrent_score() + how);
         deviceRepository.save(current_device);
         return new ResponseEntity<>(List.of("Updated"), HttpStatus.OK);
@@ -189,14 +188,32 @@ public class GameService {
                 return new ResponseEntity<>(false, HttpStatus.OK);
             }
         }
-
-        for(Device d : game.getPlayers()){
-            d.setAnswered_to_question(false);
-            deviceRepository.save(d);
-        }
-
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
+    public ResponseEntity<Object> updateDeviceHadAnswered(String serial,Boolean value){
 
+        Device device = deviceRepository.findBySerialNumber(serial);
+
+        if(device==null){
+            return new ResponseEntity<>(List.of("no_such_device"),HttpStatus.NOT_FOUND);
+        }
+
+        device.setAnswered_to_question(value);
+        deviceRepository.save(device);
+        return new ResponseEntity<>(List.of("Updated"),HttpStatus.OK);
+    }
+
+    public ResponseEntity<Object> updateDeviceReadyForNextQuestion(String serial,Boolean value) {
+
+        Device device = deviceRepository.findBySerialNumber(serial);
+
+        if (device == null) {
+            return new ResponseEntity<>(List.of("no_such_device"), HttpStatus.NOT_FOUND);
+        }
+        device.setReady_For_Next_Question(value);
+        deviceRepository.save(device);
+        return new ResponseEntity<>(List.of("Updated"),HttpStatus.OK);
+
+    }
 }
