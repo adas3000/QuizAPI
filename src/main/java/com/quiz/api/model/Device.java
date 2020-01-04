@@ -13,12 +13,19 @@ public class Device {
     @Column(name = "serialnumber")
     private String serialNumber;
 
-    @Column(name = "is_choosing_category")
-    private boolean is_choosing_category=false;
-
     private boolean answered_to_question = false;
 
+    private boolean ready_For_Next_Question = false;
+
     private int current_score = 0;
+
+    public boolean isReady_For_Next_Question() {
+        return ready_For_Next_Question;
+    }
+
+    public void setReady_For_Next_Question(boolean ready_For_Next_Question) {
+        this.ready_For_Next_Question = ready_For_Next_Question;
+    }
 
     public boolean isAnswered_to_question() {
         return answered_to_question;
@@ -48,13 +55,5 @@ public class Device {
 
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
-    }
-
-    public boolean isIs_choosing_category() {
-        return is_choosing_category;
-    }
-
-    public void setIs_choosing_category(boolean is_choosing_category) {
-        this.is_choosing_category = is_choosing_category;
     }
 }

@@ -41,7 +41,7 @@ public class GameController {
 
     @PutMapping("/update/answer/checked/{serial}")
     public ResponseEntity<Object> updateDeviceNewQuestion(@PathVariable("serial")String serial){
-        return gameService.updateDeviceNewQuestion(serial);
+        return gameService.updateDeviceReadyForNewQuestion(serial);
     }
 
     @GetMapping("/check/question/next/available/{uuid}")
