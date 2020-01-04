@@ -39,6 +39,16 @@ public class GameController {
         return gameService.updateDeviceFinishedAnsweringToQuestion(uuid, serial);
     }
 
+    @PutMapping("/update/answer/checked/{serial}")
+    public ResponseEntity<Object> updateDeviceNewQuestion(@PathVariable("serial")String serial){
+        return gameService.updateDeviceNewQuestion(serial);
+    }
+
+    @GetMapping("/check/question/next/available/{uuid}")
+    public ResponseEntity<Object> checkNextQuestionAvailable(@PathVariable("uuid")String uuid){
+        return gameService.checkNextQuestionAvailable(uuid);
+    }
+
     @GetMapping("/all/answered/{uuid}")
     public ResponseEntity<Object> checkAllDevicesAnswered(@PathVariable("uuid") String uuid) {
         return gameService.checkAllDevicesAnswered(uuid);

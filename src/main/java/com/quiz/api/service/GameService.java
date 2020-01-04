@@ -5,13 +5,11 @@ import com.quiz.api.model.Device;
 import com.quiz.api.model.Game;
 import com.quiz.api.repo.DeviceRepository;
 import com.quiz.api.repo.GameRepository;
-import com.quiz.api.request.QueueRequest;
 import com.quiz.api.response.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,27 +86,27 @@ public class GameService {
         try {
             how = Integer.parseInt(howmany);
         } catch (NumberFormatException e) {
-            return new ResponseEntity<>("incorrect_howmany", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(List.of("incorrect_howmany"), HttpStatus.BAD_REQUEST);
         }
-
+        //todo change lists of 1 string to just reutrn string but WATCH OUT before wasn't working maybe has to change ResponseEntity  to <String>
+        //todo cd.instead of<Object>
         Device current_device = deviceRepository.findBySerialNumber(serial);
         Game game = gameRepository.findByGameUUID(uuid);
 
         if (game == null || current_device == null){
-            return new ResponseEntity<>("no_such_game_or_device",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(List.of("no_such_game_or_device"),HttpStatus.NOT_FOUND);
         }
         if(how<0){
-            return new ResponseEntity<>("howmany_less_than_0",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(List.of("howmany_less_than_0"),HttpStatus.BAD_REQUEST);
         }
 
         if(!(game.getPlayers().contains(current_device))){
-            return new ResponseEntity<>("device_not_in_given_game",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(List.of("device_not_in_given_game"),HttpStatus.NOT_FOUND);
         }
 
-        current_device.setAnswered_to_question(false);
         current_device.setCurrent_score(current_device.getCurrent_score()+how);
         deviceRepository.save(current_device);
-        return new ResponseEntity<>("Updated",HttpStatus.OK);
+        return new ResponseEntity<>(List.of("Updated"),HttpStatus.OK);
     }
 
     public ResponseEntity<Object> findScoresByUUID(String uuid){
@@ -134,25 +132,25 @@ public class GameService {
         Game game = gameRepository.findByGameUUID(uuid);
 
         if (game == null || current_device == null){
-            return new ResponseEntity<>("no_such_game_or_device",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(List.of("no_such_game_or_device"),HttpStatus.NOT_FOUND);
         }
 
         if(!(game.getPlayers().contains(current_device))){
-            return new ResponseEntity<>("device_not_in_given_game",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(List.of("device_not_in_given_game"),HttpStatus.NOT_FOUND);
         }
 
         current_device.setAnswered_to_question(true);
         deviceRepository.save(current_device);
 
-        return new ResponseEntity<>("Updated",HttpStatus.OK);
+        return new ResponseEntity<>(List.of("Updated"),HttpStatus.OK);
     }
 
 
-    public ResponseEntity<Object> checkAllDevicesAnswered(@PathVariable("uuid")String uuid){
+    public ResponseEntity<Object> checkAllDevicesAnswered(String uuid){
         Game game = gameRepository.findByGameUUID(uuid);
 
         if (game == null){
-            return new ResponseEntity<>("no_such_game",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(false,HttpStatus.NOT_FOUND);
         }
 
         for(Device d : game.getPlayers()){
@@ -163,7 +161,33 @@ public class GameService {
         return new ResponseEntity<>(true,HttpStatus.OK);
     }
 
+    public ResponseEntity<Object> updateDeviceNewQuestion(String serial){
 
+        Device device = deviceRepository.findBySerialNumber(serial);
+
+        if(device==null){
+            return new ResponseEntity<>(List.of("no_such_device"),HttpStatus.NOT_FOUND);
+        }
+        device.setAnswered_to_question(false);
+
+        return new ResponseEntity<>(List.of("Updated"),HttpStatus.OK);
+    }
+
+    public ResponseEntity<Object> checkNextQuestionAvailable(String uuid){
+
+        Game game = gameRepository.findByGameUUID(uuid);
+
+        if(game==null){
+            return new ResponseEntity<>("no_such_game",HttpStatus.NOT_FOUND);
+        }
+
+        for(Device d:game.getPlayers()){
+            if((d.isAnswered_to_question())){
+               return new ResponseEntity<>(false,HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(true,HttpStatus.OK);
+    }
 
 
 }
