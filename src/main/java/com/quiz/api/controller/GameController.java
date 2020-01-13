@@ -1,5 +1,6 @@
 package com.quiz.api.controller;
 
+import com.quiz.api.request.UpdateDeviceRequest;
 import com.quiz.api.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,10 @@ public class GameController {
         return gameService.updateDeviceReadyForNextQuestion(serial,value);
     }
 
+    @PutMapping("/update/device")
+    public ResponseEntity<Object> updateDevice(@RequestBody UpdateDeviceRequest updateDeviceRequest){
+        return gameService.updateDevice(updateDeviceRequest);
+    }
 
     @GetMapping("/check/question/next/available/{uuid}")
     public ResponseEntity<Object> checkNextQuestionAvailable(@PathVariable("uuid")String uuid){

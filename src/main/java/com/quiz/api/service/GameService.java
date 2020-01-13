@@ -5,6 +5,7 @@ import com.quiz.api.model.Device;
 import com.quiz.api.model.Game;
 import com.quiz.api.repo.DeviceRepository;
 import com.quiz.api.repo.GameRepository;
+import com.quiz.api.request.UpdateDeviceRequest;
 import com.quiz.api.response.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -214,6 +215,20 @@ public class GameService {
         device.setReady_For_Next_Question(value);
         deviceRepository.save(device);
         return new ResponseEntity<>(List.of("Updated"),HttpStatus.OK);
-
     }
+
+    public ResponseEntity<Object> updateDevice(UpdateDeviceRequest updateDeviceRequest){
+
+        Device device = deviceRepository.findBySerialNumber(updateDeviceRequest.serial);
+
+        if(device==null){
+            return new ResponseEntity<>(List.of("no_such_device"),HttpStatus.NOT_FOUND);
+        }
+        device.setReady_For_Next_Question(updateDeviceRequest.ready_For_Next_Question);
+        device.setAnswered_to_question(updateDeviceRequest.answered_to_question);
+
+        deviceRepository.save(device);
+        return new ResponseEntity<>(List.of("Update"),HttpStatus.OK);
+    }
+
 }
