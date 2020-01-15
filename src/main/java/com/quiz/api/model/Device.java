@@ -19,6 +19,16 @@ public class Device {
 
     private int current_score = 0;
 
+    private String device_nickname;
+
+    public String getDevice_nickname() {
+        return device_nickname;
+    }
+
+    public void setDevice_nickname(String device_nickname) {
+        this.device_nickname = device_nickname;
+    }
+
     public boolean isReady_For_Next_Question() {
         return ready_For_Next_Question;
     }

@@ -7,6 +7,7 @@ import com.quiz.api.model.Device;
 import com.quiz.api.model.Game;
 import com.quiz.api.repo.DeviceRepository;
 import com.quiz.api.repo.GameRepository;
+import com.quiz.api.request.QueueRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,9 @@ public class QueueService {
     @Autowired
     private QuestionService questionService;
 
-    public ResponseEntity<Object> pushClientToQueue(String serialNumber) {
+    public ResponseEntity<Object> pushClientToQueue(QueueRequest queueRequest) {
+
+        String serialNumber = queueRequest.serial;
 
         Device d = deviceRepository.findBySerialNumber(serialNumber);
 

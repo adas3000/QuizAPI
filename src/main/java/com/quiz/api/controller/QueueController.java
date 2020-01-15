@@ -17,16 +17,18 @@ public class QueueController {
     @Autowired
     private QueueService queueService;
 
-    @PostMapping
+    @PostMapping("/join")
     @Permission(role = Role.Public)
     public ResponseEntity<Object> pushClientToQueue(@RequestBody @NonNull QueueRequest serial){
-        return queueService.pushClientToQueue(serial.serial);
+        return queueService.pushClientToQueue(serial);
     }
 
     @PostMapping("/{serial}")
     @Permission(role = Role.Public)
     public ResponseEntity<Object> pushClientToQueue(@PathVariable("serial")String serial){
-        return queueService.pushClientToQueue(serial);
+        QueueRequest queueRequest = new QueueRequest();
+        queueRequest.serial = serial;
+        return queueService.pushClientToQueue(queueRequest);
     }
 
     @DeleteMapping("/{serial}")
