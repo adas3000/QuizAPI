@@ -6,7 +6,6 @@ import com.quiz.api.request.QueueRequest;
 import com.quiz.api.service.QueueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,10 +16,13 @@ public class QueueController {
     @Autowired
     private QueueService queueService;
 
-    @PostMapping("/join")
+    @PostMapping("/join/{serial}/{nickname}")
     @Permission(role = Role.Public)
-    public ResponseEntity<Object> pushClientToQueue(@RequestBody @NonNull QueueRequest serial){
-        return queueService.pushClientToQueue(serial);
+    public ResponseEntity<Object> pushClientToQueue(@PathVariable("serial")String serial,@PathVariable("nickname")String nickname){
+        QueueRequest queueRequest = new QueueRequest();
+        queueRequest.serial = serial;
+        queueRequest.device_nickname = nickname;
+        return queueService.pushClientToQueue(queueRequest);
     }
 
     @PostMapping("/{serial}")

@@ -37,9 +37,9 @@ public class QueueService {
         if (d != null) {
             return new ResponseEntity<>(List.of("already_in_queue"), HttpStatus.BAD_REQUEST);
         }
-
         d = new Device();
         d.setSerialNumber(serialNumber);
+        d.setDevice_nickname(queueRequest.device_nickname);
         deviceRepository.save(d);
 
         return new ResponseEntity<>(List.of("added_to_queue"), HttpStatus.OK);

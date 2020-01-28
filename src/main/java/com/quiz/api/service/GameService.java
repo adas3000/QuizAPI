@@ -120,7 +120,7 @@ public class GameService {
         List<Score> scores = new ArrayList<>();
 
         for (Device d : game.getPlayers()) {
-            scores.add(new Score(d.getId().toString(), d.getCurrent_score()));
+            scores.add(new Score(d.getDevice_nickname(), d.getCurrent_score()));
         }
 
         return new ResponseEntity<>(scores, HttpStatus.OK);
