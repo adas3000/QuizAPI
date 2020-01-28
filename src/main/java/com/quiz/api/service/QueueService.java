@@ -176,6 +176,7 @@ public class QueueService {
         game.getPlayers().add(device);
         deviceRepository.save(device);
 
+
         return new ResponseEntity<>(gameUUID,HttpStatus.OK);
     }
 
