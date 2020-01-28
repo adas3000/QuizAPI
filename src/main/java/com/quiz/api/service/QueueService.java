@@ -7,6 +7,7 @@ import com.quiz.api.model.Device;
 import com.quiz.api.model.Game;
 import com.quiz.api.repo.DeviceRepository;
 import com.quiz.api.repo.GameRepository;
+import com.quiz.api.request.NewRoomRequest;
 import com.quiz.api.request.QueueRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -93,7 +94,7 @@ public class QueueService {
             game = new Game();
             game.getPlayers().add(d);
             game.setGameUUID(gameUUID);
-            game.setQuestions(questionService.getRandomQuestionList(Category.All,10));
+            game.setQuestions(questionService.getRandomQuestionList(Category.All,5)); //todo do player category choosing and question count
         } else {
             gameUUID = game.getGameUUID();
             game.getPlayers().add(d);
@@ -114,6 +115,41 @@ public class QueueService {
         //todo auth (only admin may use it)
         deviceRepository.deleteAll();
         return new ResponseEntity<>("Ok", HttpStatus.OK);
+    }
+
+    public ResponseEntity<Object> createNewRoom(NewRoomRequest newRoomRequest){
+
+        Device d = deviceRepository.findBySerialNumber(newRoomRequest.serial);
+
+        if (d == null) {
+            return new ResponseEntity<>("no_such_device", HttpStatus.NOT_FOUND);
+        }
+
+        int questionCount = newRoomRequest.questionCount;
+        int playersCount = newRoomRequest.playerCount;
+        Category category;
+        try {
+            category = Category.valueOf(newRoomRequest.category);
+        }
+        catch(IllegalArgumentException e){
+            e.fillInStackTrace();
+            return new ResponseEntity<>("no_such_category",HttpStatus.OK);
+        }
+
+        if(questionCount<0 || playersCount < 0) {
+            return new ResponseEntity<>("invalid_data",HttpStatus.BAD_REQUEST);
+        }
+
+        String gameUUID = UUID.randomUUID().toString();
+        Game game = new Game();
+        game.getPlayers().add(d);
+        game.setGameUUID(gameUUID);
+        game.setQuestions(questionService.getRandomQuestionList(category,questionCount));
+        game.setPlayersCount(playersCount);
+
+        gameRepository.save(game);
+
+        return new ResponseEntity<>("OK",HttpStatus.OK);
     }
 
 }

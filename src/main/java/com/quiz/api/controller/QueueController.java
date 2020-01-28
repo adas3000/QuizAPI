@@ -2,6 +2,7 @@ package com.quiz.api.controller;
 
 import com.quiz.api.Annotation.Permission;
 import com.quiz.api.enums.Role;
+import com.quiz.api.request.NewRoomRequest;
 import com.quiz.api.request.QueueRequest;
 import com.quiz.api.service.QueueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,13 @@ public class QueueController {
         queueRequest.serial = serial;
         return queueService.pushClientToQueue(queueRequest);
     }
+
+    @PostMapping("/new/room")
+    @Permission(role = Role.Public)
+    public ResponseEntity<Object> createNewRoom(@RequestBody NewRoomRequest newRoomRequest){
+        return queueService.createNewRoom(newRoomRequest);
+    }
+
 
     @DeleteMapping("/{serial}")
     @Permission(role = Role.Public)
