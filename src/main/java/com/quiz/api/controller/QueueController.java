@@ -52,10 +52,10 @@ public class QueueController {
         return queueService.getAllQueue();
     }
 
-    @GetMapping("/opponent/{serial}")
+    @GetMapping("/opponent/{playerCount}/{serial}")
     @Permission(role = Role.Public)
-    public ResponseEntity<Object>  getOpponent(@PathVariable("serial")String serial){
-        return queueService.getOpponent(serial);
+    public ResponseEntity<Object>  getOpponent(@PathVariable("serial")String serial,@PathVariable("playerCount") String playerCount){
+        return queueService.getOpponent(serial,playerCount);
     }
 
 }

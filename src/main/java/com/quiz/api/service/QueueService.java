@@ -59,7 +59,17 @@ public class QueueService {
     }
 
 
-    public ResponseEntity<Object> getOpponent(String serialNumber) {
+    public ResponseEntity<Object> getOpponent(String serialNumber,String playerCount) {
+
+        int p_count;
+        try{
+            p_count = Integer.parseInt(playerCount);
+        }
+        catch(NumberFormatException e){
+            e.fillInStackTrace();
+            return new ResponseEntity<>("wrong_player_count_num",HttpStatus.BAD_REQUEST);
+        }
+
 
         Device d = deviceRepository.findBySerialNumber(serialNumber);
 
@@ -72,7 +82,7 @@ public class QueueService {
         Game game = null;
 
         for(Game g : games){
-            if(g.getPlayers().size()==1){
+            if(g.getPlayers().size()<g.getPlayersCount()){
                 game = g;
             }
         }

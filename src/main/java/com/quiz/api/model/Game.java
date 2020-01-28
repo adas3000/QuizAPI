@@ -20,6 +20,16 @@ public class Game {
     @ManyToMany
     private List<Question> questions = new ArrayList<>();
 
+    private int playersCount;
+
+    public int getPlayersCount() {
+        return playersCount;
+    }
+
+    public void setPlayersCount(int playersCount) {
+        this.playersCount = playersCount;
+    }
+
     private String gameUUID =null;
 
     public Long getId() {
