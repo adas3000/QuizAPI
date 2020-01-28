@@ -152,4 +152,31 @@ public class QueueService {
         return new ResponseEntity<>("OK",HttpStatus.OK);
     }
 
+    public ResponseEntity<Object> findDuel(String serial){
+
+        Device device = deviceRepository.findBySerialNumber(serial);
+
+        if(device==null){
+            return new ResponseEntity<>("no_such_device",HttpStatus.BAD_REQUEST);
+        }
+
+        List<Game> games = Lists.newArrayList(gameRepository.findAll());
+
+        Game game = null;
+
+        for(Game g : games){
+            if(g.getPlayers().size()<g.getPlayersCount()){
+                game = g;
+            }
+        }
+        if(game==null){
+            return new ResponseEntity<>("no_rooms",HttpStatus.ACCEPTED);
+        }
+        String gameUUID = game.getGameUUID();
+        game.getPlayers().add(device);
+        deviceRepository.save(device);
+
+        return new ResponseEntity<>(gameUUID,HttpStatus.OK);
+    }
+
 }

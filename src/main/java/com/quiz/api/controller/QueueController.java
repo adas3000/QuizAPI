@@ -40,6 +40,10 @@ public class QueueController {
         return queueService.createNewRoom(newRoomRequest);
     }
 
+    @PostMapping("/{serial}/join")
+    public ResponseEntity<Object> findDuel(@PathVariable("serial")String serial){
+        return queueService.findDuel(serial);
+    }
 
     @DeleteMapping("/{serial}")
     @Permission(role = Role.Public)
