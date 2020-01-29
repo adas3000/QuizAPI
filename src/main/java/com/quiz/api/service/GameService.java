@@ -43,12 +43,11 @@ public class GameService {
         if (game == null) {
             return new ResponseEntity<>("no_such_game", HttpStatus.NOT_FOUND);
         }
-        if (!(game.getPlayers().size() > 1)) {
+        if (game.getPlayers().size() != game.getPlayersCount()) {
             return new ResponseEntity<>("wait", HttpStatus.FOUND);
         }
 
-
-        return new ResponseEntity<>(List.of("Ok"), HttpStatus.OK);
+        return new ResponseEntity<>(List.of("OK"), HttpStatus.OK);
     }
 
     public ResponseEntity<Object> removePlayerFromGame(String uuid, String serial) {

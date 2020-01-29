@@ -122,7 +122,7 @@ public class QueueService {
         Device d = deviceRepository.findBySerialNumber(newRoomRequest.serial);
 
         if (d == null) {
-            return new ResponseEntity<>("no_such_device", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(List.of("no_such_device"), HttpStatus.NOT_FOUND);
         }
 
         int questionCount = newRoomRequest.questionCount;
@@ -133,11 +133,11 @@ public class QueueService {
         }
         catch(IllegalArgumentException e){
             e.fillInStackTrace();
-            return new ResponseEntity<>("no_such_category",HttpStatus.OK);
+            return new ResponseEntity<>(List.of("no_such_category"),HttpStatus.OK);
         }
 
         if(questionCount<0 || playersCount < 0) {
-            return new ResponseEntity<>("invalid_data",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(List.of("invalid_data"),HttpStatus.BAD_REQUEST);
         }
 
         String gameUUID = UUID.randomUUID().toString();
@@ -149,7 +149,7 @@ public class QueueService {
 
         gameRepository.save(game);
 
-        return new ResponseEntity<>("OK",HttpStatus.OK);
+        return new ResponseEntity<>(List.of(gameUUID),HttpStatus.OK);
     }
 
     public ResponseEntity<Object> findDuel(String serial){
@@ -157,9 +157,8 @@ public class QueueService {
         Device device = deviceRepository.findBySerialNumber(serial);
 
         if(device==null){
-            return new ResponseEntity<>("no_such_device",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(List.of("no_such_device"),HttpStatus.BAD_REQUEST);
         }
-
         List<Game> games = Lists.newArrayList(gameRepository.findAll());
 
         Game game = null;
@@ -170,14 +169,14 @@ public class QueueService {
             }
         }
         if(game==null){
-            return new ResponseEntity<>("no_rooms",HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(List.of("no_rooms"),HttpStatus.ACCEPTED);
         }
         String gameUUID = game.getGameUUID();
         game.getPlayers().add(device);
         deviceRepository.save(device);
+        gameRepository.save(game);
 
-
-        return new ResponseEntity<>(gameUUID,HttpStatus.OK);
+        return new ResponseEntity<>(List.of(gameUUID),HttpStatus.OK);
     }
 
 }
