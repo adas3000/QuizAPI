@@ -55,19 +55,23 @@ public class GameService {
         Game game = gameRepository.findByGameUUID(uuid);
 
         if (game == null) {
-            return new ResponseEntity<>("no_such_game", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(List.of("no_such_game"), HttpStatus.NOT_FOUND);
         }
         Device device = deviceRepository.findBySerialNumber(serial);
 
         if (device == null) {
-            return new ResponseEntity<>("no_such_device", HttpStatus.OK);
+            return new ResponseEntity<>(List.of("no_such_device"), HttpStatus.NOT_FOUND);
         }
         if (game.getPlayers().contains(device)) {
             game.getPlayers().remove(device);
-            if (game.getPlayers().size() == 0) gameRepository.delete(game);
-            return new ResponseEntity<>("removed", HttpStatus.OK);
+
+            if (game.getPlayers().size() == 0) {
+                gameRepository.deleteByGameUUID(uuid);
+            }
+            else gameRepository.save(game);
+            return new ResponseEntity<>(List.of("removed"), HttpStatus.OK);
         }
-        return new ResponseEntity<>("device_and_game_has_no_relation", HttpStatus.OK);
+        return new ResponseEntity<>(List.of("no_relation_between_game_and_device"), HttpStatus.NOT_FOUND);
     }
 
 
